@@ -5,7 +5,7 @@ project(tulloc LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_executable(tulloc main.cpp)
+add_library(tulloc STATIC )
 
 install(TARGETS tulloc
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
