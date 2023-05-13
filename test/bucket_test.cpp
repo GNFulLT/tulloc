@@ -1,8 +1,11 @@
 #include "bucket.h"
+#include "dynamic_mh_pool.h"
 
-int main()
+void bucket_test()
 {
-	Bucket bcket(sizeof(int),500);
+	/*
+	 
+	Bucket bcket(sizeof(int), 500);
 	bcket.init();
 	auto intp = bcket.allocate();
 	auto intp2 = bcket.allocate();
@@ -10,5 +13,52 @@ int main()
 	auto intp4 = bcket.allocate();
 	bcket.deallocate(intp);
 	bcket.deallocate(intp4);
+	
+	*/
+}
+
+void mh_pool_alloc_dealloc()
+{
+	MHPool pool(sizeof(int),50);
+	auto t1 = pool.allocate();
+	auto t2 = pool.allocate();
+	auto t3 = pool.allocate();
+	auto t4 = pool.allocate();
+	auto t5 = pool.allocate();
+	auto t6 = pool.allocate();
+
+	pool.deallocate(t1);
+	pool.deallocate(t2);
+	pool.deallocate(t3);
+	pool.deallocate(t4);
+	pool.deallocate(t5);
+	pool.deallocate(t6);
+
+}
+
+
+void mh_pool_alloc_bucket()
+{
+	MHPool pool(sizeof(int), 10);
+	std::vector<int*> ptrs;
+	for (int i = 0; i < 10; i++)
+	{
+		ptrs.push_back((int*)pool.allocate());
+	}
+	auto elevenPtr = pool.allocate();
+	for (int i = 0; i < 10; i++)
+	{
+		pool.deallocate(ptrs[i]);
+	}
+	pool.deallocate(elevenPtr);
+}
+
+int main()
+{
+	// PASSED
+	// bucket_test();
+	// PASSED
+	// mh_pool_alloc_dealloc();
+	mh_pool_alloc_bucket();
 	return 0;
 }
