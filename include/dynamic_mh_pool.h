@@ -9,7 +9,7 @@ class MHPool
 {
 public:
 	MHPool(std::uint16_t tsize,std::uint16_t growCount);
-
+	~MHPool();
 	void* allocate();
 	void deallocate(void* ptr);
 private:

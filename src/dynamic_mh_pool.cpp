@@ -8,6 +8,16 @@ MHPool::MHPool(std::uint16_t tsize, std::uint16_t growCount) : m_tsize(tsize),m_
 	p_usingBucket = nullptr;
 }
 
+MHPool::~MHPool()
+{
+	auto iter = m_buckets.begin();
+	while (iter != m_buckets.end())
+	{
+		iter->release();
+		iter++;
+	}
+}
+
 void* MHPool::allocate()
 {
 	if (p_usingBucket == nullptr || p_usingBucket->is_full())
@@ -32,10 +42,10 @@ void* MHPool::allocate()
 			{
 				//X TODO : COPY CTOR CAUSES BUG
 				//X There is no empty bucket, create one
-				Bucket bucket(m_tsize, m_growCount);
-				m_buckets.push_back(bucket);
-				m_buckets.back().init();
+				m_buckets.emplace_back(m_tsize,m_growCount);
 			}
+			m_buckets.back().init();
+			
 			p_usingBucket = &m_buckets.back();
 		}
 	}
