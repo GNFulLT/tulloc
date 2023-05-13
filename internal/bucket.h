@@ -4,19 +4,24 @@
 #include <cstddef>
 #include <cstdint>
 
+class MHPool;
+
 class Bucket
 {
 public:
-	Bucket(std::uint16_t tsize,std::uint16_t initalCount);
 	~Bucket();
 	void init();
 	
 	void* allocate();
 	bool belongs(void* ptr) const noexcept;
 	void deallocate(void* ptr);
+	void release();
+	bool is_full() const noexcept;
 private:
+	Bucket(std::uint16_t tsize, std::uint16_t initalCount);
 	void* get_node_by_id(std::uint16_t id);
 private:
+	bool m_is_released;
 	//X Total Block count in Bucket
 	std::uint16_t m_block_num;
 
@@ -31,6 +36,7 @@ private:
 	std::uint16_t m_block_size;
 
 	std::uint16_t m_bucket_size;
+	friend class MHPool;
 };
 
 #endif // BUCKET_H

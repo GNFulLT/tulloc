@@ -9,19 +9,25 @@ Bucket::Bucket(std::uint16_t tsize, std::uint16_t initalCount) : m_alloc_pointer
 {
     //X Minimum size is integer.
     assert(tsize >= sizeof(int));
-
+    m_is_released = true;
     m_begin_pointer = 0;
     m_bucket_size = m_block_size * m_block_num;
 }
 
 Bucket::~Bucket()
 {
-    assert(m_begin_pointer != 0);
-    ::VirtualFree((void*)(m_begin_pointer), 0, MEM_RELEASE);
+    if (!m_is_released)
+    {
+        assert(m_begin_pointer != 0);
+        ::VirtualFree((void*)(m_begin_pointer), 0, MEM_RELEASE);
+        m_is_released = true;
+    }
 }
 
 void Bucket::init()
 {
+    m_is_released = false;
+
     void* begin = ::VirtualAlloc
     (
         nullptr,
@@ -60,7 +66,8 @@ void* Bucket::allocate()
 
 bool Bucket::belongs(void* ptr) const noexcept
 {
-    return std::uint16_t(ptr) >= m_begin_pointer && std::uint16_t(ptr) < m_begin_pointer + m_bucket_size;
+    auto ptrs = std::size_t(ptr);
+    return  ptrs >= m_begin_pointer && ptrs < m_begin_pointer + m_bucket_size;
 }
 
 void Bucket::deallocate(void* ptr)
@@ -70,11 +77,29 @@ void Bucket::deallocate(void* ptr)
     
     // Alignment
     assert((std::size_t(ptr) - m_begin_pointer) % m_block_size == 0);
+    
+    //X Belongs
+    assert(belongs(ptr));
+
     std::uint16_t id = (std::size_t(ptr) - m_begin_pointer) / m_block_size;
 
     (*(std::uint16_t*)get_node_by_id(id)) = m_alloc_pointer;
     m_alloc_pointer = id;
     m_used_block_num--;
+}
+
+void Bucket::release()
+{
+    if (!m_is_released)
+    {
+        assert(m_begin_pointer != 0);
+        ::VirtualFree((void*)(m_begin_pointer), 0, MEM_RELEASE);
+    }
+}
+
+bool Bucket::is_full() const noexcept
+{
+    return m_block_num == m_used_block_num;
 }
 
 void* Bucket::get_node_by_id(std::uint16_t id)
