@@ -13,16 +13,18 @@ Bucket::Bucket(std::uint16_t tsize, std::uint16_t initalCount) : m_alloc_pointer
     m_begin_pointer = 0;
     m_bucket_size = m_block_size * m_block_num;
 }
-
 Bucket::~Bucket()
 {
-    if (!m_is_released)
-    {
-        assert(m_begin_pointer != 0);
-        ::VirtualFree((void*)(m_begin_pointer), 0, MEM_RELEASE);
-        m_is_released = true;
-    }
+
 }
+//Bucket::~Bucket()
+//{
+//    if (!m_is_released)
+//    {
+//        assert(m_begin_pointer != 0);
+//        ::VirtualFree((void*)(m_begin_pointer), 0, MEM_RELEASE);
+//    }
+//}
 
 void Bucket::init()
 {

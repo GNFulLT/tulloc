@@ -9,6 +9,7 @@ class MHPool;
 class Bucket
 {
 public:
+	Bucket(std::uint16_t tsize, std::uint16_t initalCount);
 	~Bucket();
 	void init();
 	
@@ -18,7 +19,6 @@ public:
 	void release();
 	bool is_full() const noexcept;
 private:
-	Bucket(std::uint16_t tsize, std::uint16_t initalCount);
 	void* get_node_by_id(std::uint16_t id);
 private:
 	bool m_is_released;
