@@ -30,6 +30,7 @@ void* MHPool::allocate()
 		else
 		{
 			{
+				//X TODO : COPY CTOR CAUSES BUG
 				//X There is no empty bucket, create one
 				Bucket bucket(m_tsize, m_growCount);
 				m_buckets.push_back(bucket);
