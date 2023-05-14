@@ -1,7 +1,11 @@
 #include "bucket.h"
 
+#ifdef WIN32
 #include <windows.h>
 #include <memoryapi.h>
+#else
+#error NOT DEFINED FOR THIS PLATFORM
+#endif
 #include <new>
 #include <cassert>
 
@@ -29,7 +33,8 @@ Bucket::~Bucket()
 void Bucket::init()
 {
     m_is_released = false;
-
+    
+#ifdef WIN32
     void* begin = ::VirtualAlloc
     (
         nullptr,
@@ -37,7 +42,9 @@ void Bucket::init()
         MEM_RESERVE | MEM_COMMIT,
         PAGE_READWRITE
     );
-
+#else
+#error NOT DEFINED FOR THIS PLATFORM
+#endif
     if (begin == nullptr)
     {
         throw std::bad_alloc();
@@ -94,8 +101,12 @@ void Bucket::release()
 {
     if (!m_is_released)
     {
+#ifdef WIN32
         assert(m_begin_pointer != 0);
         ::VirtualFree((void*)(m_begin_pointer), 0, MEM_RELEASE);
+#else
+#error NOT DEFINED FOR THIS PLATFORM
+#endif
     }
 }
 
