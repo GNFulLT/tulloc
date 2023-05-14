@@ -1,9 +1,10 @@
 #ifndef DYNAMIC_MH_POOL_H
 #define DYNAMIC_MH_POOL_H
 
-#include "../internal/bucket.h"
 
 #include <vector>
+
+class Bucket;
 
 class MHPool
 {

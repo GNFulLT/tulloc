@@ -1,6 +1,7 @@
 #include "dynamic_mh_pool.h"
 
 #include <cassert>
+#include "../internal/bucket.h"
 
 MHPool::MHPool(std::uint16_t tsize, std::uint16_t growCount) : m_tsize(tsize),m_growCount(growCount)
 {
