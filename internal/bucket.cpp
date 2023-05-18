@@ -1,11 +1,6 @@
 #include "bucket.h"
 
-#ifdef WIN32
-#include <windows.h>
-#include <memoryapi.h>
-#else
-#error NOT DEFINED FOR THIS PLATFORM
-#endif
+#include "../internal/os.h"
 #include <new>
 #include <cassert>
 
@@ -35,7 +30,7 @@ void Bucket::init()
     m_is_released = false;
     
 #ifdef WIN32
-    void* begin = ::VirtualAlloc
+    void* begin = allocate_page
     (
         nullptr,
         m_block_size * m_block_num,
@@ -64,13 +59,13 @@ void Bucket::init()
 void* Bucket::allocate()
 {
     assert(m_begin_pointer != 0);
-    std::uint16_t nextAlloc = m_alloc_pointer;
-    void* ptrrr = get_node_by_id(nextAlloc);
+    std::uint16_t currentAlloc = m_alloc_pointer;
+    void* ptrrr = get_node_by_id(currentAlloc);
     m_alloc_pointer = (*(std::uint16_t*)ptrrr);
     
     m_used_block_num++;
 
-    return (void*)(m_begin_pointer + nextAlloc * m_block_size);
+    return (void*)(m_begin_pointer + currentAlloc * m_block_size);
 }
 
 bool Bucket::belongs(void* ptr) const noexcept
@@ -90,6 +85,7 @@ void Bucket::deallocate(void* ptr)
     //X Belongs
     assert(belongs(ptr));
 
+    //X TODO id is unnecessary
     std::uint16_t id = (std::size_t(ptr) - m_begin_pointer) / m_block_size;
 
     (*(std::uint16_t*)get_node_by_id(id)) = m_alloc_pointer;
@@ -103,7 +99,7 @@ void Bucket::release()
     {
 #ifdef WIN32
         assert(m_begin_pointer != 0);
-        ::VirtualFree((void*)(m_begin_pointer), 0, MEM_RELEASE);
+        free_page((void*)(m_begin_pointer), 0, MEM_RELEASE);
 #else
 #error NOT DEFINED FOR THIS PLATFORM
 #endif
