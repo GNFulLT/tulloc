@@ -1,20 +1,35 @@
 #include "bucket.h"
 #include "dynamic_mh_pool.h"
 
+#include <sstream>
+#include <chrono>
 void bucket_test()
 {
-	/*
-	 
-	Bucket bcket(sizeof(int), 500);
+	Bucket bcket(sizeof(int), 5000);
 	bcket.init();
-	auto intp = bcket.allocate();
-	auto intp2 = bcket.allocate();
-	auto intp3 = bcket.allocate();
-	auto intp4 = bcket.allocate();
-	bcket.deallocate(intp);
-	bcket.deallocate(intp4);
 	
-	*/
+	auto beginTime = std::chrono::high_resolution_clock::now();
+	for (int i = 0; i < 5000; i++)
+	{
+		auto intp = bcket.allocate();
+		bcket.deallocate(intp);
+
+	}
+	auto endTime = std::chrono::high_resolution_clock::now();
+	auto diff = (endTime - beginTime).count();
+
+	beginTime = std::chrono::high_resolution_clock::now();
+	for (int i = 0; i < 5000; i++)
+	{
+		auto intp = new int;
+		delete intp;
+	}
+
+	endTime = std::chrono::high_resolution_clock::now();
+	auto diff2 = (endTime - beginTime).count();
+	int a = 5;
+	
+
 }
 
 void mh_pool_alloc_dealloc()
@@ -55,10 +70,12 @@ void mh_pool_alloc_bucket()
 
 int main()
 {
+
 	// PASSED
 	// bucket_test();
 	// PASSED
 	// mh_pool_alloc_dealloc();
-	mh_pool_alloc_bucket();
+	//mh_pool_alloc_bucket();
+	bucket_test();
 	return 0;
 }

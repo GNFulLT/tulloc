@@ -5,7 +5,8 @@ project(tulloc LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_library(tulloc STATIC "${CMAKE_CURRENT_SOURCE_DIR}/internal/bucket.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/src/dynamic_mh_pool.cpp")
+add_library(tulloc STATIC "${CMAKE_CURRENT_SOURCE_DIR}/internal/bucket.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/internal/string_block.cpp"
+"${CMAKE_CURRENT_SOURCE_DIR}/src/dynamic_mh_pool.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/src/singleton_mh_pool.cpp")
 
 target_include_directories(tulloc PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include/")
 
