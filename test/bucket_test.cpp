@@ -1,8 +1,17 @@
 #include "bucket.h"
 #include "dynamic_mh_pool.h"
+#include "string_pool.h"
 
 #include <sstream>
 #include <chrono>
+
+void string_test()
+{
+	Allocator allocator;
+	auto str = allocator.AllocString("Selamm");
+	auto str2 = allocator.AllocString("Asss");
+}
+
 void bucket_test()
 {
 	Bucket bcket(sizeof(int), 5000);
@@ -76,6 +85,8 @@ int main()
 	// PASSED
 	// mh_pool_alloc_dealloc();
 	//mh_pool_alloc_bucket();
-	bucket_test();
+	// PASSED
+	//bucket_test();
+	string_test();
 	return 0;
 }
