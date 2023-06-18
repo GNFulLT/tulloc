@@ -58,7 +58,7 @@ private:
     {
         size_t _size;
 
-        char Chars[1];
+        char* charPtr;
     };
 
     char* m_pNext = nullptr;  
