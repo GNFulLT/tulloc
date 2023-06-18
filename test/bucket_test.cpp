@@ -7,9 +7,9 @@
 
 void string_test()
 {
-	Allocator allocator;
-	auto str = allocator.AllocString("Selamm");
-	auto str2 = allocator.AllocString("Asss");
+	StringPool allocator;
+	auto str = allocator.allocate("Selamm");
+	auto str2 = allocator.allocate("Asss");
 }
 
 void bucket_test()
