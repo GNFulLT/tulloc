@@ -21,19 +21,7 @@ public:
     StringPool(const StringPool&) = delete;
     StringPool& operator=(const StringPool&) = delete;
 
-    void clear()
-    {
-        for (auto& pChunk : m_chunks)
-        {
-            free(pChunk);
-            pChunk = nullptr;
-        }
-
-        m_chunks.clear();
-
-        m_pNext = nullptr;
-        m_pLimit = nullptr;
-    }
+    void clear();
 
     TuString allocate(const char* ptr);
 

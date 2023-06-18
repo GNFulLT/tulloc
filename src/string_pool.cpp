@@ -1,5 +1,19 @@
 #include "string_pool.h"
 
+void StringPool::clear()
+{
+    for (auto& pChunk : m_chunks)
+    {
+        free(pChunk);
+        pChunk = nullptr;
+    }
+
+    m_chunks.clear();
+
+    m_pNext = nullptr;
+    m_pLimit = nullptr;
+}
+
 TuString StringPool::allocate(const char* ptr)
 {
     return allocate(ptr, ptr + strlen(ptr));

@@ -65,6 +65,7 @@ void mh_pool_alloc_bucket()
 {
 	MHPool pool(sizeof(int), 10);
 	std::vector<int*> ptrs;
+
 	for (int i = 0; i < 10; i++)
 	{
 		ptrs.push_back((int*)pool.allocate());
