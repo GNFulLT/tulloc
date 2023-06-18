@@ -5,7 +5,7 @@
 
 TuString::TuString(char* beginPtr, std::size_t size) noexcept : m_begin(beginPtr),m_size(size)
 {
-	m_inUsageCount = 0;
+	m_inUsageCount = strlen(beginPtr);
 }
 
 bool TuString::isFull() const noexcept
