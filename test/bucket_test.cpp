@@ -8,8 +8,8 @@
 void string_test()
 {
 	StringPool allocator;
-	auto str = allocator.allocate("Selamm");
-	auto str2 = allocator.allocate("Asss");
+	auto str = allocator.allocate("C:\\Users\\lenovo\\Desktop\\PoolAllocator\\tulloc");
+	auto str2 = allocator.allocate("IEntity3062");
 }
 
 void bucket_test()
